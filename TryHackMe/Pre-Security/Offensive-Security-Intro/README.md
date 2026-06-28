@@ -2,7 +2,7 @@
 
 ## Overview
 
-This room introduces the basics of offensive security through a vulnerable web application called **FakeBank**. The objective was to enumerate the application, discover hidden functionality, and understand how exposed endpoints can lead to unintended actions.
+In this room, I explored the FakeBank web application to practice basic web enumeration and understand how hidden functionality can be discovered. Using DIRB, I identified an unlinked endpoint that exposed a deposit form and completed the lab by interacting with the discovered functionality.
 
 ---
 
@@ -25,9 +25,11 @@ Relevant results:
 
 The `/bank-deposit` endpoint was the most interesting result because it exposed functionality that wasn't available through the application's normal navigation.
 
-**Evidence**
+### DIRB Scan
 
-* Screenshot: DIRB scan showing discovered endpoints.
+![DIRB Scan](images/dirb-scan.png)
+
+*Figure 1: DIRB identified the hidden `/bank-deposit` endpoint.*
 
 ---
 
@@ -43,23 +45,36 @@ For the lab exercise, I submitted:
 * **Account:** `8881`
 * **Amount:** `2000`
 
-After submitting the request and returning to the account page, the application reflected the updated balance and displayed a success message indicating that the operation had completed successfully.
+After submitting the deposit request, I returned to the account page and confirmed that the balance had increased. The application then displayed a success message indicating that the lab objective had been completed.
 
-This demonstrated that functionality intended to be hidden was still reachable once the endpoint had been discovered through enumeration.
+This demonstrated that sensitive functionality exposed through a hidden endpoint could be discovered using directory enumeration. The exercise reinforces that simply hiding a URL is not an effective security control.
 
-**Evidence**
+### Deposit Form
 
-* Screenshot: Deposit form
-* Screenshot: Updated account balance
-* Screenshot: Success message
+![Deposit Form](images/deposit-form.png)
+
+*Figure 2: Hidden deposit page.*
+
+### Updated Balance
+
+![Updated account balance after deposit](images/updated-balance.png)
+
+*Figure 3: Updated account balance.*
+
+### Success Message
+
+![Success Message](images/success-message.png)
+
+*Figure 4: Successful completion of the lab.*
 
 ---
 
 ## What I Learned
 
-* Enumeration is an essential first step during web application testing because hidden endpoints are often not linked from the user interface.
-* Automated tools like DIRB can quickly identify directories that expand the application's attack surface.
-* Sensitive functionality should never rely on obscurity. If an endpoint exists, it should be protected with appropriate server-side security controls regardless of whether users can navigate to it directly.
+
+- Directory enumeration can reveal functionality that is not linked from the application's interface.
+- Discovering hidden pages is often the first step before attempting further testing.
+- Sensitive features should be protected with proper authorization instead of relying on hidden URLs.
 
 ---
 
