@@ -49,7 +49,7 @@ The threat intelligence aligned with the SIEM findings. Since both internal tele
 
 ### IP Reputation Lookup
 
-![IP Reputation](images/ip-scanner.png)
+![IP Reputation](images/ip-reputation.png)
 
 *Figure 2: Threat intelligence confirmed the IP address as malicious with a confidence score of 100%.*
 
@@ -63,7 +63,7 @@ Blocking the address immediately prevented further communication from the identi
 
 ### Firewall Rule
 
-![Firewall Block](images/firewall.png)
+![Firewall Block](images/firewall-block.png)
 
 *Figure 3: The malicious IP address added to the firewall block list.*
 
@@ -86,7 +86,7 @@ Escalating the incident ensured these questions could be investigated before the
 
 ### Escalation
 
-![Escalation](images/escalation.png)
+![Escalation](images/incident-escalation.png)
 
 *Figure 4: Escalating the incident to the SOC Team Lead for continued investigation.*
 
