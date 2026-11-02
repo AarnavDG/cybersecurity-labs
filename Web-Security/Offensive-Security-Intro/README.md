@@ -1,12 +1,16 @@
 # TryHackMe – Offensive Security Intro
 
-## Overview
+**Platform:** TryHackMe · **Category:** Web Security · **Difficulty:** Easy · **Completed:** 2026-06
 
-In this room, I explored the FakeBank web application to practice basic web enumeration and understand how hidden functionality can be discovered. Using DIRB, I identified an unlinked endpoint that exposed a deposit form and completed the lab by interacting with the discovered functionality.
+## Summary
+
+- **Scenario:** A training banking app (FakeBank) with no obvious way to complete the task from its normal pages.
+- **Result:** Found an unlinked `/bank-deposit` endpoint with DIRB and used it to complete the lab objective.
+- **Key takeaway:** A hidden URL is not an access control. Sensitive functionality needs server-side authorization.
 
 ---
 
-## Enumeration
+## Methodology
 
 After browsing the available pages, I didn't find any obvious functionality that could be used to complete the task. The next step was to enumerate hidden directories using **DIRB**.
 
@@ -23,45 +27,23 @@ Relevant results:
 + http://fakebank.thm/images (CODE:301|SIZE:179)
 ```
 
-The `/bank-deposit` endpoint was the most interesting result because it exposed functionality that wasn't available through the application's normal navigation.
-
-### DIRB Scan
+`/bank-deposit` was the most interesting result because it returned a normal page (200) for functionality that wasn't available through the application's navigation. `/images` returned a redirect (301) and was not useful.
 
 ![DIRB Scan](images/dirb-scan.png)
 
 *Figure 1: DIRB identified the hidden `/bank-deposit` endpoint.*
 
----
-
-## Exploitation
-
-Opening the discovered `/bank-deposit` page revealed a form with the following fields:
-
-* Deposit account number
-* Deposit amount
-
-For the lab exercise, I submitted:
-
-* **Account:** `8881`
-* **Amount:** `2000`
-
-After submitting the deposit request, I returned to the account page and confirmed that the balance had increased. The application then displayed a success message indicating that the lab objective had been completed.
-
-This demonstrated that sensitive functionality exposed through a hidden endpoint could be discovered using directory enumeration. The exercise reinforces that simply hiding a URL is not an effective security control.
-
-### Deposit Form
+Opening the page revealed a form with two fields: deposit account number and deposit amount.
 
 ![Deposit Form](images/deposit-form.png)
 
 *Figure 2: Hidden deposit page.*
 
-### Updated Balance
+For the lab exercise, I submitted account `8881` and amount `2000`. Returning to the account page, I confirmed that the balance had increased, and the application displayed a success message.
 
 ![Updated account balance after deposit](images/updated-balance.png)
 
 *Figure 3: Updated account balance.*
-
-### Success Message
 
 ![Success Message](images/success-message.png)
 
@@ -69,24 +51,41 @@ This demonstrated that sensitive functionality exposed through a hidden endpoint
 
 ---
 
-## What I Learned
+## Findings and Impact
 
+**Vulnerability:** Forced browsing / broken access control
+**References:** OWASP Top 10 A01:2021 (Broken Access Control), CWE-425 (Direct Request / Forced Browsing)
 
-- Directory enumeration can reveal functionality that is not linked from the application's interface.
-- Discovering hidden pages is often the first step before attempting further testing.
-- Sensitive features should be protected with proper authorization instead of relying on hidden URLs.
+The deposit functionality was reachable by requesting its URL directly, even though no page linked to it. In this lab, knowing the URL was enough to use the feature.
 
----
-
-## Tools Used
-
-* Kali Linux AttackBox
-* DIRB v2.22
-* Mozilla Firefox
+**Impact:** In a real application, an endpoint that changes account data and relies on being hard to find would let anyone who discovers it modify balances. Discovery is easy with common wordlists, so obscurity gives very little protection.
 
 ---
 
-## References
+## Detection and Mitigation
 
-* TryHackMe – Offensive Security Intro
-* DIRB documentation
+**Detection (what a defender would look for):**
+
+- A burst of requests from one source IP in a short time. This scan tested 4,609 paths, so web server access logs would show thousands of requests in a row.
+- A very high share of 404 responses from that IP, with a few 200 or 301 responses for paths that appear in no site navigation.
+- Requests for paths with default wordlist names, sometimes with a recognizable scanner user-agent.
+- A SIEM or WAF rule that alerts when one IP exceeds a threshold of 404s per minute.
+
+**Mitigation:**
+
+- Enforce authentication and authorization on the server for `/bank-deposit`, so a request is rejected unless the user is allowed to perform that action.
+- Don't treat an unlinked URL as protected. Assume every endpoint will be found.
+- Rate-limit or block clients that generate large numbers of 404 responses.
+- Remove or restrict anything unneeded (test pages, old endpoints) from production.
+
+---
+
+## Next Steps
+
+- Practice the same idea on PortSwigger's access control labs, where the goal is to exploit and then fix broken authorization, not just find a hidden page.
+- Learn to read web server access logs so I can see this scan from the defender's side.
+
+---
+
+**Tools:** Kali Linux AttackBox, DIRB v2.22, Mozilla Firefox
+**References:** TryHackMe – Offensive Security Intro; DIRB documentation
