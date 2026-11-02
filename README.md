@@ -11,6 +11,7 @@ All labs were completed in authorized training environments (TryHackMe).
 | [Defensive Security Intro](Defensive-Security/Defensive-Security-Intro/) | TryHackMe | Defensive | Easy | SIEM alert triage, threat intelligence lookup, IP blocking, incident escalation |
 | [Offensive Security Intro](Web-Security/Offensive-Security-Intro/) | TryHackMe | Web | Easy | Directory enumeration with DIRB, forced browsing |
 
+
 ## Repository Structure
 
 - **Defensive-Security/**: SOC and incident response labs
@@ -18,7 +19,7 @@ All labs were completed in authorized training environments (TryHackMe).
 
 ## Writeup Format
 
-Each lab follows the same structure: objective, tools, investigation, findings, detection or mitigation, and lessons learned.
+Each lab follows the same structure: summary, methodology, findings and impact, detection and mitigation, and next steps.
 
 ## Contact
 
