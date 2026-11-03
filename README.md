@@ -10,12 +10,14 @@ All labs were completed in authorized training environments (TryHackMe).
 |-----|----------|----------|------------|------------------|
 | [Defensive Security Intro](Defensive-Security/Defensive-Security-Intro/) | TryHackMe | Defensive | Easy | SIEM alert triage, threat intelligence lookup, IP blocking, incident escalation |
 | [Offensive Security Intro](Web-Security/Offensive-Security-Intro/) | TryHackMe | Web | Easy | Directory enumeration with DIRB, forced browsing |
+| [Log4Shell Wireshark Analysis](Network-Analysis/Log4j-Wireshark-Analysis/) | Malware-Traffic-Analysis.net | Network | N/A | Wireshark filtering, payload decoding, traffic analysis |
 
 
 ## Repository Structure
 
 - **Defensive-Security/**: SOC and incident response labs
 - **Web-Security/**: web application and enumeration labs
+- **Network-Analysis/**: packet capture and traffic analysis labs
 
 ## Writeup Format
 
